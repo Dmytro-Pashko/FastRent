@@ -19,11 +19,11 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes and initiates default state.
-    private val stateController: MutableStateFlow<SlashScreenState> =
-        MutableStateFlow(SlashScreenState.Idle())
+    private val stateController: MutableStateFlow<SplashScreenState> =
+        MutableStateFlow(SplashScreenState.Idle)
 
     // The UI collects from this StateFlow to get its state updates.
-    val state: StateFlow<SlashScreenState> = stateController.asStateFlow()
+    val state: StateFlow<SplashScreenState> = stateController.asStateFlow()
 
     companion object {
         @JvmStatic
@@ -31,20 +31,20 @@ class SplashViewModel @Inject constructor(
     }
 
     fun checkIsOnboardingCompleted() {
-        stateController.value = SlashScreenState.Loading()
+        stateController.value = SplashScreenState.Loading
         viewModelScope.launch {
             val isOnboardingCompleted = isOnboardingCompleted.invoke()
             LOGGER.debug("Onboarding flow is completed: {}", isOnboardingCompleted)
-            stateController.value = SlashScreenState.Completed(isOnboardingCompleted)
+            stateController.value = SplashScreenState.Completed(isOnboardingCompleted)
         }
     }
 }
 
-sealed class SlashScreenState {
+sealed class SplashScreenState {
 
-    open class Idle : SlashScreenState()
+    object Idle : SplashScreenState()
 
-    open class Loading : SlashScreenState()
+    object Loading : SplashScreenState()
 
-    open class Completed(isDashboardCompleted: Boolean) : SlashScreenState()
+    class Completed(val isDashboardCompleted: Boolean) : SplashScreenState()
 }
