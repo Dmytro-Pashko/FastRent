@@ -7,6 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Dagger module that provides repository instances.
+ */
 @InstallIn(SingletonComponent::class)
 @Module
 object RepositoryModule {

@@ -17,10 +17,19 @@ class AppComponentInitializer : Initializer<Unit> {
         private val LOGGER: Logger = LoggerFactory.getLogger("AppComponentInitializer")
     }
 
+    /**
+     * Initializes the application components.
+     *
+     * @param context the application context
+     */
     override fun create(context: Context) {
         LOGGER.debug("Application component initialized.")
     }
 
+    /**
+     * Specifies the list of dependencies needed for the initialization of the application
+     * components.
+     */
     override fun dependencies() =
         listOf(
             LoggerInitializer::class.java,

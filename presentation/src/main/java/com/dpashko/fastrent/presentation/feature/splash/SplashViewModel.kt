@@ -63,11 +63,11 @@ class SplashViewModel @Inject constructor(
         LOGGER.debug("Started splash initialization.")
         viewModelScope.launch {
             checkIsOnboardingCompleted()
-            stateController.filter { it is SplashScreenState.Initialized }
+            stateController.filter { it is SplashScreenState.Completed }
                 .combine(
                     animationController.filter { it == SplashAnimationState.COMPLETED }
                 ) { state, _ ->
-                    (state as SplashScreenState.Initialized).isOnboardingCompleted
+                    (state as SplashScreenState.Completed).isOnboardingCompleted
                 }.collect { isOnboardingCompleted ->
                     LOGGER.debug("Splash screen initialization completed.")
                     when (isOnboardingCompleted) {
@@ -83,7 +83,7 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             val isOnboardingCompleted = isOnboardingCompleted.invoke()
             LOGGER.debug("Onboarding flow is completed: {}", isOnboardingCompleted)
-            stateController.value = SplashScreenState.Initialized(isOnboardingCompleted)
+            stateController.value = SplashScreenState.Completed(isOnboardingCompleted)
         }
     }
 
@@ -126,7 +126,7 @@ sealed class SplashScreenState {
      * @property isOnboardingCompleted A [Boolean]
      * value that indicates whether the onboarding flow has been completed.
      */
-    class Initialized(val isOnboardingCompleted: Boolean) : SplashScreenState()
+    class Completed(val isOnboardingCompleted: Boolean) : SplashScreenState()
 }
 
 enum class SplashAnimationState {

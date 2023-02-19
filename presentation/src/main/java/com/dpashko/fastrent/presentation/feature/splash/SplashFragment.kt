@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.MotionLayout.TransitionListener
 import androidx.fragment.app.viewModels
 import com.dpashko.fastrent.databinding.FragmentSplashBinding
 import com.dpashko.fastrent.presentation.extension.hideNavigationBars
+import com.dpashko.fastrent.presentation.extension.showNavigationBars
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,30 +37,39 @@ class SplashFragment : AppCompatDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().hideNavigationBars()
-//        binding.splashMotionLayout.addTransitionListener(this)
+        binding.splashMotionLayout.addTransitionListener(object : TransitionListener {
+            override fun onTransitionStarted(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int
+            ) {
+                viewModel.onSplashAnimationStarted()
+            }
+
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float
+            ) {
+            }
+
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                viewModel.onSplashAnimationCompleted()
+            }
+
+            override fun onTransitionTrigger(
+                motionLayout: MotionLayout?,
+                triggerId: Int,
+                positive: Boolean,
+                progress: Float
+            ) {
+            }
+        })
     }
 
-    fun onTransitionStarted(motionLayout: MotionLayout?, startId: Int, endId: Int) {
-        viewModel.onSplashAnimationStarted()
-    }
-
-    fun onTransitionChange(
-        motionLayout: MotionLayout?,
-        startId: Int,
-        endId: Int,
-        progress: Float
-    ) {
-    }
-
-    fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
-        viewModel.onSplashAnimationCompleted()
-    }
-
-    fun onTransitionTrigger(
-        motionLayout: MotionLayout?,
-        triggerId: Int,
-        positive: Boolean,
-        progress: Float
-    ) {
+    override fun onDestroyView() {
+        requireActivity().showNavigationBars()
+        super.onDestroyView()
     }
 }
