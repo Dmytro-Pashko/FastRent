@@ -1,0 +1,47 @@
+plugins {
+    id 'kotlin-kapt'
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.dagger.hilt.android'
+}
+
+android {
+    namespace 'com.dpashko.fastrent.domain'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 33
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+    implementation 'androidx.core:core-ktx:1.9.0'
+    // Hilt
+    implementation("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+
+    // Logger
+    implementation 'org.slf4j:slf4j-api:1.7.36'
+}

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <ConstraintSet android:id="@+id/start">
+    <Constraint
+        android:id="@+id/splash_icon"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:src="@drawable/splash_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Constraint
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/splash_app_name"
+        app:layout_constraintTop_toBottomOf="@+id/splash_icon"
+        app:layout_constraintStart_toEndOf="parent" />
+  </ConstraintSet>
+  <ConstraintSet android:id="@+id/end">
+    <Constraint
+        android:id="@+id/splash_icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:scaleX="1"
+        android:scaleY="1"
+        android:src="@drawable/splash_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+    <Constraint
+        android:id="@+id/splash_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/splash_icon" />
+  </ConstraintSet>
+  <Transition
+      android:id="@+id/splash_transition"
+      app:constraintSetEnd="@+id/end"
+      app:constraintSetStart="@+id/start"
+      app:autoTransition="animateToEnd"
+      app:duration="1000"
+      app:layoutDuringTransition="ignoreRequest"
+      app:motionInterpolator="overshoot" />
+</MotionScene>
