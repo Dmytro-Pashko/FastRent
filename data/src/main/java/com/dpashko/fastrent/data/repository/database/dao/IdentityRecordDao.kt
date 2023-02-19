@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
  * Identity Record DAO that handles all the DB operations for [IdentityRecordEntity] table.
  */
 @Dao
-internal interface IdentityRecordDao {
+interface IdentityRecordDao {
 
     /**
      *  Adds or replaces entity in the table.

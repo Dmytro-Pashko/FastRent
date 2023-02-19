@@ -6,28 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.fragment.app.viewModels
 import com.dpashko.fastrent.databinding.FragmentSplashBinding
-import com.dpashko.fastrent.presentation.extension.getTransitionCompletionFlow
 import com.dpashko.fastrent.presentation.extension.hideNavigationBars
-import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
-class SplashFragment : DaggerFragment() {
+@AndroidEntryPoint
+class SplashFragment : AppCompatDialogFragment() {
 
-    companion object {
-        @JvmStatic
-        private val LOGGER: Logger = LoggerFactory.getLogger("SplashFragment")
-    }
-
-    @Inject
-    lateinit var viewModel: SplashViewModel
+    private val viewModel: SplashViewModel by viewModels()
     private lateinit var binding: FragmentSplashBinding
 
     override fun onCreateView(
@@ -39,36 +28,37 @@ class SplashFragment : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.checkIsOnboardingCompleted()
+        viewModel.loadInitialDataAndWaitAnimationCompletion()
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().hideNavigationBars()
+//        binding.splashMotionLayout.addTransitionListener(this)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        // Create a new coroutine in the lifecycleScope of Fragment View.
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state
-                .onEach {
-                    LOGGER.debug("Observed new state: {}", it)
-                }
-                // Waits until the main animation transition of the splash screen ends
-                // and we receive Completed state of the screen.
-                .filter { it is SplashScreenState.Completed }
-                .combine(binding.splashMotionLayout.getTransitionCompletionFlow()) { state, _ ->
-                    (state as SplashScreenState.Completed).isDashboardCompleted
-                }.collect { isDashboardCompleted ->
-                    when (isDashboardCompleted) {
-                        // TODO(pashkd2): Navigate to Dashboard screen.
-                        true -> {}
-                        // TODO(pashkd2): Navigate to Onboarding screen.
-                        false -> {}
-                    }
-                }
-        }
+    fun onTransitionStarted(motionLayout: MotionLayout?, startId: Int, endId: Int) {
+        viewModel.onSplashAnimationStarted()
+    }
+
+    fun onTransitionChange(
+        motionLayout: MotionLayout?,
+        startId: Int,
+        endId: Int,
+        progress: Float
+    ) {
+    }
+
+    fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+        viewModel.onSplashAnimationCompleted()
+    }
+
+    fun onTransitionTrigger(
+        motionLayout: MotionLayout?,
+        triggerId: Int,
+        positive: Boolean,
+        progress: Float
+    ) {
     }
 }

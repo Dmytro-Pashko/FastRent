@@ -1,10 +1,15 @@
 package com.dpashko.fastrent
 
+import android.app.Application
 import androidx.startup.AppInitializer
-import dagger.android.support.DaggerApplication
+import dagger.hilt.android.HiltAndroidApp
 
-class FastRentApp : DaggerApplication() {
+@HiltAndroidApp
+class FastRentApp : Application() {
 
-    override fun applicationInjector() = AppInitializer.getInstance(this)
-        .initializeComponent(AppComponentInitializer::class.java)
+    override fun onCreate() {
+        super.onCreate()
+        AppInitializer.getInstance(this)
+            .initializeComponent(AppComponentInitializer::class.java)
+    }
 }

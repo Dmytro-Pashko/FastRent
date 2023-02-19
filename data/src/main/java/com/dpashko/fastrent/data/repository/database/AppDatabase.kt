@@ -17,7 +17,7 @@ import com.dpashko.fastrent.data.repository.database.model.IdentityRecordEntity
 /**
  * Class specifies Room Database and provides DAO for each persistable model.
  */
-internal abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun identityRecordDao(): IdentityRecordDao
 

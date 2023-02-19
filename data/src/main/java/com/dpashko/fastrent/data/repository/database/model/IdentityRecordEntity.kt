@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
  * The [IdentityRecordEntity] represents the database table schema for identity records.
  */
 @Entity(tableName = "identity_records")
-internal data class IdentityRecordEntity(
+data class IdentityRecordEntity(
 
     /**
      * The unique key of the record.

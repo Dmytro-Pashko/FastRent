@@ -13,7 +13,7 @@ import javax.inject.Inject
 /**
  * Implementation of [IdentityRepository] that uses [AppDatabase] for persistent entity data.
  */
-internal class DatabaseIdentityRepository @Inject constructor(
+class DatabaseIdentityRepository @Inject constructor(
     private val gson: Gson,
     appDatabase: AppDatabase,
 ) : IdentityRepository {
